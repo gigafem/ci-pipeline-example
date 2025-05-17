@@ -29,11 +29,11 @@ jobs:
       - name: Run unit tests
         run: PYTHONPATH=. pytest tests
 
-      - name: Build Docker image
-        run: docker build -t ghcr.io/${{ github.gigafem }}/my-app:latest .
-
       - name: Log in to GitHub Container Registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.gigafem }} --password-stdin
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build Docker image
+        run: docker build -t ghcr.io/${{ github.actor }}/my-app:latest .
 
       - name: Push Docker image
-        run: docker push ghcr.io/${{ github.gigafem }}/my-app:latest
+        run: docker push ghcr.io/${{ github.actor }}/my-app:latest
