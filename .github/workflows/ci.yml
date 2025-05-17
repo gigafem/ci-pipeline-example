@@ -37,3 +37,17 @@ jobs:
 
       - name: Push Docker image
         run: docker push ghcr.io/${{ github.actor }}/my-app:latest
+
+      - name: Notify Slack (on success)
+        if: success()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"✅ CI прошёл успешно для ${{ github.repository }} в ветке `${{ github.ref_name }}`."}' \
+          ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: Notify Slack (on failure)
+        if: failure()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"❌ CI упал для ${{ github.repository }} в ветке `${{ github.ref_name }}`."}' \
+          ${{ secrets.SLACK_WEBHOOK }}
