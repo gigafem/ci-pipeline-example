@@ -27,7 +27,8 @@ jobs:
         run: flake8 .
 
       - name: Run unit tests
-        run: pytest tests
+        run: PYTHONPATH=. pytest tests
+
 
       - name: Build Docker image
         run: docker build -t ghcr.io/${{ github.repository }}/my-app:latest .
